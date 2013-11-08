@@ -4,7 +4,6 @@ var Player = (function () {
 		console.log('Player init');
 
 		this._tracks = [
-			// 'http://previews.7digital.com/clip/8515447?oauth_consumer_key=7digitalClips&oauth_nonce=96g3qmozc2fumqwr&oauth_signature=PI%2BiryYXb7hFCiyQEZklUVfA2VM%3D&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1383908817&oauth_version=1.0',
 			'http://s3.amazonaws.com/kob_samples/01_so_what_sample.mp3',
 			'http://s3.amazonaws.com/kob_samples/02_freddie_freeloader_sample.mp3',
 			'http://s3.amazonaws.com/kob_samples/03_blue_in_green_sample.mp3',
