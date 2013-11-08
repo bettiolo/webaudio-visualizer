@@ -2,25 +2,31 @@ var Player = (function () {
 
 	function Player() {
 		console.log('Player init');
-		this._context = new webkitAudioContext();
-		this._source = this._context.createBufferSource();
-		this._analyser = this._context.createAnalyser();
-		this._destination = this._context.destination;
-		this._source.connect(this._analyser);
-		this._analyser.connect(this._destination);
+
+		this._tracks = [
+			// 'http://previews.7digital.com/clip/8515447?oauth_consumer_key=7digitalClips&oauth_nonce=96g3qmozc2fumqwr&oauth_signature=PI%2BiryYXb7hFCiyQEZklUVfA2VM%3D&oauth_signature_method=HMAC-SHA1&oauth_timestamp=1383908817&oauth_version=1.0',
+			'http://s3.amazonaws.com/kob_samples/01_so_what_sample.mp3',
+			'http://s3.amazonaws.com/kob_samples/02_freddie_freeloader_sample.mp3',
+			'http://s3.amazonaws.com/kob_samples/03_blue_in_green_sample.mp3',
+			'http://s3.amazonaws.com/kob_samples/04_all_blues_sample.mp3',
+			'http://s3.amazonaws.com/kob_samples/05_flamenco_sketches_sample.mp3'
+		];
+		this._currentTrack = 0;
+		this.init();
 	}
 
-	Player.prototype.load = function (url) {
-		console.log('Loading ' + url);
+	Player.prototype.load = function () {
+		var trackUrl = this._tracks[this._currentTrack];
+		console.log('Loading ' + trackUrl);
 		var _self = this;
 		var request = new XMLHttpRequest();
-		request.open('GET', url, true);
+		request.open('GET', trackUrl, true);
 		request.responseType = 'arraybuffer';
 		request.send();
 		request.onload = function() {
 			_self._context.decodeAudioData(request.response,
 				function onSuccess(decodedBuffer) {
-					console.log('Loaded ' + url);
+					console.log('Loaded ' + trackUrl);
 					_self._audioBuffer = decodedBuffer;
 					_self.play();
 				},
@@ -31,8 +37,18 @@ var Player = (function () {
 		};
 	};
 
+	Player.prototype.init = function () {
+		console.log('Init');
+		this._context = new webkitAudioContext();
+		this._analyser = this._context.createAnalyser();
+		this._destination = this._context.destination;
+		this._analyser.connect(this._destination);
+	}
+
 	Player.prototype.play = function () {
 		console.log('Play');
+		this._source = this._context.createBufferSource();
+		this._source.connect(this._analyser);
 		this._source.buffer = this._audioBuffer;
 		this._source.loop = true;
 		this._source.start(0.0);
@@ -60,5 +76,5 @@ var Player = (function () {
 window.onload = function () {
 	console.log('Window load');
 	window.currentPlayer = new Player();
-	currentPlayer.load('media/RoccoW_-_Pumped.mp3');
+	currentPlayer.load();
 }
