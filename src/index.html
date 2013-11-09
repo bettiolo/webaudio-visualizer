@@ -7,6 +7,21 @@
 		<button onclick="currentPlayer.play();">Play</button>
 		<button onclick="currentPlayer.pause();">Pause</button>
 		<button onclick="currentPlayer.stop();">Stop</button>
+        <button onclick="currentPlayer.setGain(0.0);">Mute</button>
+        <button onclick="currentPlayer.setGain(0.5);">Volume 50%</button>
+        <button onclick="currentPlayer.setGain(1.0);">Volume 100%</button>
+        <button onclick="currentPlayer.setGain(3.0);">Volume 300%</button>
+        <div id="info"></div>
 		<script type="text/javascript" src="app/player.js"></script>
+		<script type="text/javascript" src="app/player-ui.js"></script>
+        <script type="text/javascript">
+            window.onload = function () {
+                console.log('Window load');
+                window.currentPlayer = new Player();
+                window.currentPlayerUi = new PlayerUi(window.currentPlayer);
+                currentPlayer.load();
+                currentPlayer.play();
+            }
+        </script>
 	</body>
 </html>
